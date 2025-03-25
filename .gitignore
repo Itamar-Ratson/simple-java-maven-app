@@ -27,5 +27,6 @@ env/
 !*.md
 !*.html
 !*.yaml
+!*.yml
 !*.conf
 !*.tf
