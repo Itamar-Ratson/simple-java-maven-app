@@ -53,6 +53,7 @@ jobs:
           rm -rf target/surefire-reports
 
   deploy:
+    
     runs-on: ubuntu-latest
     steps:
     - name: Deploy to EC2
