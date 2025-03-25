@@ -42,7 +42,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/itamar-ratson/github-actions-app:${{ steps.version.outputs.version }}
+          tags: ghcr.io/itamar-ratson/github-actions-app:latest
 
       - name: Print Version
         run: "echo 'New Version: ${{steps.bump.outputs.version}}'"
