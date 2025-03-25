@@ -53,7 +53,7 @@ jobs:
           rm -rf target/surefire-reports
 
   deploy:
-    
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Deploy to EC2
@@ -61,11 +61,13 @@ jobs:
         PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
         HOST: ${{ secrets.EC2_HOST }}
         USER: ${{ secrets.EC2_USER }}
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}
-        DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
       run: |
         echo "$PRIVATE_KEY" > github-ec2.pem && chmod 600 github-ec2.pem
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
-        docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-        docker run itamarratson/github-actions
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker pull ghcr.io/itamar-ratson/github-actions-app:latest
+          docker stop github-actions-app || true
+          docker rm github-actions-app || true
+          docker run -d --name github-actions-app ghcr.io/itamar-ratson/github-actions-app:latest
         '
+
