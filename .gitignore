@@ -1,15 +1,31 @@
-.DS_Store
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
+# ignore everything
+*
 
-# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
-!/.mvn/wrapper/maven-wrapper.jar
+# don't ignore the following:
 
-.idea
+# folders
+!**/
+
+# except these folders
+venv/
+env/
+
+# files
+!.gitignore
+!.myfuncs
+!Makefile
+!requirements.txt
+!Dockerfile
+!ci-cd-project.png
+!Jenkinsfile
+
+# file types
+!*.sh
+!*.c
+!*.h
+!*.py
+!*.md
+!*.html
+!*.yaml
+!*.conf
+!*.tf
