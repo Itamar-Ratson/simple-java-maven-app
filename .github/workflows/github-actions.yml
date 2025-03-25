@@ -57,6 +57,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Deploy to EC2
+      env:
+        PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+        HOST: ${{ secrets.EC2_HOST }}
+        USER: ${{ secrets.EC2_USER }}
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
       run: |
-        echo ${{ secrets.EC2_PRIVATE_KEY }} > github-ec2.pem && chmod 600 github-ec2.pem
-        ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}
+        echo "$PRIVATE_KEY" > github-ec2.pem && chmod 600 github-ec2.pem
+        ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
+        docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+        docker run itamarratson/github-actions
+        '
